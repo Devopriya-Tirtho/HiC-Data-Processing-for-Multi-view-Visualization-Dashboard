@@ -1,0 +1,8 @@
+Here, in the NCBI dataset, Basillus data does not have any row and column header. So we need to use these three python script for this special case of Basillus Data processing.
+
+And the most important step is to ommit whitespace with comma. (The first and foremost thing to do in the dataset (raw))
+1. RawDatatoAdjacencyMatrix_forWithoutRowHeaderData
+
+2. WithoutConsecutiveBinDeletion_CsvtoTxt
+
+3. txtTOjson_reduceDataset
