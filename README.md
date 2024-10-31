@@ -1,11 +1,11 @@
 # Hi-C Data Preparation for Genomic Visualization
 
-This repository contains codes and datasets for transforming raw Hi-C data into formats suitable for multi-view visualization in my thesis work. The focus is on preparing adjacency matrices from Hi-C contact matrices, with special handling for datasets like *Bacillus subtilis*, which require additional processing.
+This repository contains codes and datasets for transforming raw Hi-C data into formats suitable for multi-view visualization in my thesis work. 
 
 ---
 
 ## Data Preprocessing for Visualization
-
+First, the focus is on preparing adjacency matrices from Hi-C contact matrices.
 ### Input Data Description: Hi-C Contact Matrices
 Hi-C technology generates matrices representing interaction frequencies between pairs of genomic bins, providing insights into the spatial organization of the genome. However, the *Bacillus subtilis* dataset from the NCBI database presents a unique challenge: it lacks row and column headers. To address this, specific preprocessing steps and scripts are required to create adjacency matrices from raw Hi-C data.
 
