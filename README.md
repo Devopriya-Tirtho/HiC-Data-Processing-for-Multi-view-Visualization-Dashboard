@@ -156,4 +156,38 @@ This project uses a modified version of the ForceAtlas2 layout algorithm for wei
 
 Refer to the [Weighted_GPUGraphLayout](https://github.com/Devopriya-Tirtho/Weighted_GPUGraphLayout) repository for further details on the ForceAtlas2 algorithm and its application to weighted graphs.
 
+# Edge Data Processing for Heatmap and Parallel Plot Visualizations
+
+This project prepares edge data for visualizing genomic interactions through heatmaps and parallel plots. The complete edge dataset is used for heatmap visualization, while a filtered subset of top-weighted edges is prepared for parallel plot visualization.
+
+## How It Works
+
+### Full Edge File for Heatmap
+The edge data is processed using a custom script to ensure compatibility with heatmap visualization. The entire set of edges, including all source, target, and weight interactions, is converted into the appropriate format.
+
+### Top Weighted Edges for Parallel Plot
+To simplify and enhance the readability of parallel plot visualizations, we extract only the top-weighted edges for each source node using the `Top10EdgePerSourceFromJson.py` script. This filtering highlights the most significant interactions.
+
+## Running the Edge Data Processing Scripts
+
+1. **Full Edge Data for Heatmap**:
+   - Use the provided Jupyter Notebook `CSV_TO_EDGE_(heatmap)_EdgeDataPreparation.ipynb` to process the complete edge file.
+   - The output will be a JSON or CSV file that can be directly used for heatmap visualizations.
+
+2. **Top Weighted Edges for Parallel Plot**:
+   - Use the Python script `Top10EdgePerSourceFromJson.py` to generate the top 10 weighted edges per source node.
+   - Run the script with the following command:
+     ```bash
+     python Top10EdgePerSourceFromJson.py
+     ```
+   - Ensure you replace the `json_filepath` and `output_filepath` in the script with the correct paths to your input and output files.
+
+### Notes
+
+- The full edge dataset captures all interactions for comprehensive heatmap visualizations.
+- The top-weighted edge subset is optimized for clear and effective parallel plot visualizations.
+
+Feel free to customize paths and parameters as needed to suit your data.
+
+
 
