@@ -70,3 +70,65 @@ For the full code and detailed instructions, visit the repository: [3DGraphVisua
 
 This setup is optimized for easy extraction of 3D node coordinates, making it suitable for further data analysis or integration into other visualization systems.
 
+# 3D Data Preparation for Visualization
+
+This repository provides the code and instructions for preparing and enhancing 3D data obtained from force-directed graph visualizations. The workflow involves extracting raw 3D coordinates from the graph layout and applying a smoothing algorithm to improve the visualization quality.
+
+---
+
+## Overview
+
+The 3D data preparation process consists of two main steps:
+
+1. **Extraction of Raw 3D Coordinates**: 
+   - Run the 3D graph visualization using the `3d-force-graph` library as outlined in the [3DGraphVisualization](https://github.com/Devopriya-Tirtho/3DGraphVisualization) repository.
+   - Export the x, y, and z coordinates of all nodes once the layout stabilizes.
+
+2. **Node Smoothing**:
+   - Use the provided smoothing script to enhance the positions of the nodes, reducing jitter and improving the overall graph structure.
+
+---
+
+## Node Smoothing Process
+
+### How It Works
+
+1. **Load the Extracted Coordinates**:
+   - The exported CSV file containing the node `id`, `x`, `y`, and `z` coordinates is loaded into the smoothing script.
+   
+2. **Apply Smoothing Algorithm**:
+   - The algorithm adjusts the positions of nodes by averaging their coordinates with those of neighboring nodes.
+   - This process reduces abrupt changes and provides a more stable and visually appealing graph structure.
+
+3. **Save the Smoothed Coordinates**:
+   - The final smoothed coordinates are saved in a new CSV file, ready for use in the multi-view visualization dashboard or other analysis tools.
+
+---
+
+## How to Run the Smoothing Script
+
+1. Open the `NodeSmoothing_3DVisEnhancer.ipynb` notebook.
+2. Load your exported node coordinates CSV file into the notebook.
+3. Run the provided code cells to smooth the 3D coordinates.
+4. Save the smoothed coordinates to a new CSV file for further use.
+
+---
+
+## Prerequisites
+
+- **Python 3** and the following libraries:
+  - `pandas` for data manipulation
+  - `numpy` for mathematical operations
+  - Any other dependencies specified in the notebook
+
+## Notes
+
+- Ensure the raw coordinates are accurately captured before applying smoothing.
+- Adjust the parameters in the smoothing algorithm as needed to achieve the desired visualization quality.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
