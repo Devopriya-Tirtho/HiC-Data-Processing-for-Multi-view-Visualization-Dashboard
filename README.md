@@ -1,6 +1,27 @@
 # Hi-C Data Preparation for Genomic Visualization
 
-This repository contains codes and datasets for transforming raw Hi-C data into formats suitable for multi-view visualization in my thesis work. The focus is on preparing adjacency matrices from Hi-C contact matrices.
+This repository contains codes and datasets for transforming raw Hi-C data into formats suitable for multi-view visualization in my thesis work. The focus is on preparing adjacency matrices from Hi-C contact matrices, with special handling for datasets like *Bacillus subtilis*, which require additional processing.
+
+---
+
+## Data Preprocessing for Visualization
+
+### Input Data Description: Hi-C Contact Matrices
+Hi-C technology generates matrices representing interaction frequencies between pairs of genomic bins, providing insights into the spatial organization of the genome. However, the *Bacillus subtilis* dataset from the NCBI database presents a unique challenge: it lacks row and column headers. To address this, specific preprocessing steps and scripts are required to create adjacency matrices from raw Hi-C data.
+
+### Special Case Handling for *Bacillus subtilis* Data
+
+#### Step 1: Initial Cleaning
+The first and most crucial step is to clean the raw Hi-C data by replacing any whitespace characters with commas. This ensures that the data is structured correctly before further processing.
+
+#### Step 2: Data Transformation Process
+We use a series of Python scripts to transform the cleaned data into an adjacency matrix:
+
+1. **RawHiCData_TO_AdjacencyMatrix**: Transforms the formatted Hi-C data into an adjacency matrix.
+2. **WithoutConsecutiveBinDeletion_CsvtoTxt**: Converts the adjacency matrix from CSV to TXT format, ensuring no consecutive bins are deleted.
+3. **txtTOjson_reduceDataset**: Converts the TXT file into a JSON format optimized for visualization.
+
+These steps ensure that the *Bacillus subtilis* data is accurately processed for visualizations.
 
 ---
 
@@ -15,78 +36,74 @@ This project uses a modified version of the ForceAtlas2 layout algorithm for wei
    ```bash
    graph_viewer cpu max_iterations num_snaps sg|wg scale gravity exact edgelist_path out_path [csv|png|bin]
    ```
-   - **cpu**: Indicates the use of the CPU implementation.
-   - **max_iterations**: The number of iterations to run the layout algorithm.
+   - **cpu**: Use the CPU implementation.
+   - **max_iterations**: Number of iterations to run the layout algorithm.
    - **num_snaps**: Number of snapshots to render during the layout process.
-   - **sg|wg**: Choose between strong (`sg`) or weak gravity (`wg`).
+   - **sg|wg**: Strong (`sg`) or weak gravity (`wg`).
    - **scale**: Scale factor for the repulsive force.
    - **gravity**: Scale factor for the gravitational force.
    - **exact**: Use exact O(|V|^2) force calculation.
-   - **edgelist_path**: Path to your edge list file (in text format, whitespace-separated).
+   - **edgelist_path**: Path to the edge list file (whitespace-separated).
    - **out_path**: Path to save the output file.
-   - **[csv|png|bin]**: Choose the output format (default is `png`).
-
-Refer to the [Weighted_GPUGraphLayout](https://github.com/Devopriya-Tirtho/Weighted_GPUGraphLayout) repository for further details on the ForceAtlas2 algorithm and its application to weighted graphs.
+   - **[csv|png|bin]**: Output format (default: `png`).
 
 ---
 
 ## 3D Graph Data Preparation
 
-This project visualizes datasets as 3D force-directed graphs using the `3d-force-graph` library. The main purpose is to extract 3D coordinates of graph nodes after running the layout algorithm.
+This project visualizes datasets as 3D force-directed graphs using the `3d-force-graph` library. The purpose is to extract 3D coordinates of graph nodes after running the layout algorithm.
 
 ### How It Works
 
-1. **Dataset Selection**: 
-   - Choose from available datasets (e.g., Bacillus, Agrobacterium, Yeast) using a dropdown menu. The selected dataset will render as a 3D graph with nodes and links.
-   
-2. **Graph Layout Execution**:
-   - The graph rendering runs 10 times, measuring and displaying the average execution time.
-   - The force-directed algorithm stabilizes the nodes based on repulsive and attractive forces.
+1. **Dataset Selection**: Choose from datasets (e.g., Bacillus, Agrobacterium, Yeast) using a dropdown menu.
+2. **Graph Layout Execution**: The graph rendering runs 10 times to stabilize node positions.
+3. **3D Coordinate Extraction**: Export the stabilized x, y, and z coordinates to a CSV file.
 
-3. **3D Coordinate Extraction**:
-   - Once the graph stabilizes, export the x, y, and z coordinates of all nodes.
-   - Click the **"Export Node Coordinates to CSV"** button to download these coordinates for external use.
-
-### Key Steps to Capture 3D Coordinates
-
-1. Run the 3D graph layout using the provided dropdown to select a dataset.
-2. Wait for the layout to stabilize after 10 iterations.
-3. Use the **Export** feature to save the 3D coordinates to a CSV file.
-
-Refer to the [3DGraphVisualization](https://github.com/Devopriya-Tirtho/3DGraphVisualization) repository for the full code and instructions.
+Refer to the [3DGraphVisualization](https://github.com/Devopriya-Tirtho/3DGraphVisualization) repository for more details.
 
 ---
 
-## Heatmap and Parallel Plot Data Preparation
+## Node Smoothing for 3D Data
 
-This project prepares edge data for visualizing genomic interactions through heatmaps and parallel plots. The complete edge dataset is used for heatmap visualization, while a filtered subset of top-weighted edges is prepared for parallel plot visualization.
+### Overview
 
-### How It Works
+The 3D data preparation involves two steps:
 
-#### Full Edge File for Heatmap
-The edge data is processed using a custom script to ensure compatibility with heatmap visualization. The entire set of edges, including all source, target, and weight interactions, is converted into the appropriate format.
+1. **Extraction of Raw 3D Coordinates**: Export coordinates from the 3D graph visualization.
+2. **Node Smoothing**: Apply a smoothing algorithm to enhance node positions.
 
-#### Top Weighted Edges for Parallel Plot
-To simplify and enhance the readability of parallel plot visualizations, only the top-weighted edges for each source node are extracted using the `Top10EdgePerSourceFromJson.py` script.
+### Node Smoothing Process
 
-### Running the Edge Data Processing Scripts
+1. **Load Coordinates**: Load the exported CSV file containing node `id`, `x`, `y`, and `z` coordinates.
+2. **Apply Smoothing**: Adjust node positions by averaging with neighbors to reduce jitter.
+3. **Save Smoothed Coordinates**: Save the smoothed data to a new CSV file.
+
+### How to Run the Smoothing Script
+
+1. Open the `NodeSmoothing_3DVisEnhancer.ipynb` notebook.
+2. Load your exported CSV file.
+3. Run the script to smooth the coordinates and save them.
+
+---
+
+## Edge Data Processing for Heatmap and Parallel Plot Visualizations
+
+### Full Edge File for Heatmap
+Process the entire edge dataset for heatmap visualization. The script outputs a JSON or CSV file for use in visualizations.
+
+### Top Weighted Edges for Parallel Plot
+Extract only the top-weighted edges for each source node using `Top10EdgePerSourceFromJson.py`.
+
+### Running the Scripts
 
 1. **Full Edge Data for Heatmap**:
-   - Use the provided Jupyter Notebook `CSV_TO_EDGE_(heatmap)_EdgeDataPreparation.ipynb` to process the complete edge file.
-   - The output will be a JSON or CSV file that can be directly used for heatmap visualizations.
-
+   - Use `CSV_TO_EDGE_(heatmap)_EdgeDataPreparation.ipynb` to process the data.
 2. **Top Weighted Edges for Parallel Plot**:
-   - Use the Python script `Top10EdgePerSourceFromJson.py` to generate the top 10 weighted edges per source node.
-   - Run the script with the following command:
+   - Run `Top10EdgePerSourceFromJson.py`:
      ```bash
      python Top10EdgePerSourceFromJson.py
      ```
-   - Ensure you replace the `json_filepath` and `output_filepath` in the script with the correct paths to your input and output files.
-
-### Notes
-
-- The full edge dataset captures all interactions for comprehensive heatmap visualizations.
-- The top-weighted edge subset is optimized for clear and effective parallel plot visualizations.
+   - Update `json_filepath` and `output_filepath` as needed.
 
 ---
 
