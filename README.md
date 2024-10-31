@@ -132,3 +132,28 @@ The 3D data preparation process consists of two main steps:
 
 This project is licensed under the MIT License.
 
+# 2D Graph Coordinates Generation
+
+This project uses a modified version of the ForceAtlas2 layout algorithm for weighted graphs. The 2D graph coordinates are generated using code inspired by the [Weighted_GPUGraphLayout](https://github.com/Devopriya-Tirtho/Weighted_GPUGraphLayout) repository.
+
+## How to Run
+
+1. Navigate to the appropriate directory where your code is located.
+2. Run the following command to generate the 2D coordinates:
+   ```bash
+   graph_viewer cpu max_iterations num_snaps sg|wg scale gravity exact edgelist_path out_path [csv|png|bin]
+   ```
+   - **cpu**: Indicates the use of the CPU implementation.
+   - **max_iterations**: The number of iterations to run the layout algorithm.
+   - **num_snaps**: Number of snapshots to render during the layout process.
+   - **sg|wg**: Choose between strong (`sg`) or weak gravity (`wg`).
+   - **scale**: Scale factor for the repulsive force.
+   - **gravity**: Scale factor for the gravitational force.
+   - **exact**: Use exact O(|V|^2) force calculation.
+   - **edgelist_path**: Path to your edge list file (in text format, whitespace-separated).
+   - **out_path**: Path to save the output file.
+   - **[csv|png|bin]**: Choose the output format (default is `png`).
+
+Refer to the [Weighted_GPUGraphLayout](https://github.com/Devopriya-Tirtho/Weighted_GPUGraphLayout) repository for further details on the ForceAtlas2 algorithm and its application to weighted graphs.
+
+
